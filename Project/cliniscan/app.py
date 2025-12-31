@@ -28,14 +28,20 @@ def load_classifier():
     model = efficientnet_b0(weights=EfficientNet_B0_Weights.DEFAULT)
     in_features = model.classifier[1].in_features
     model.classifier[1] = nn.Linear(in_features, len(CLASS_NAMES))
-    model.load_state_dict(torch.load("best_efficientnet_b0.pth", map_location=DEVICE))
+    #model.load_state_dict(torch.load("best_efficientnet_b0.pth", map_location=DEVICE))
+    model.load_state_dict(
+    torch.load("Project/cliniscan/best_efficientnet_b0.pth", map_location=DEVICE)
+)
+
     model.to(DEVICE)
     model.eval()
     return model
 
 @st.cache_resource
 def load_detector():
-    return YOLO("yolov8s.pt")   # 🔥 your trained YOLOv8 model
+    #return YOLO("yolov8s.pt")  
+    return YOLO("Project/cliniscan/yolov8s.pt")
+# 🔥 your trained YOLOv8 model
 
 classifier = load_classifier()
 detector = load_detector()
@@ -147,4 +153,5 @@ st.caption(
     "Detected regions indicate abnormal areas. "
     "Disease predictions are based on the full image."
 )
+
 
